@@ -3,157 +3,450 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio de Andrés F. Petit: videojuegos y experiencias interactivas en la web.">
   <title>Andrés F. Petit | Game Dev Portfolio</title>
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons (para los íconos de redes sociales) -->
+  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <!-- Google Fonts (Tipografía Luxury) -->
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-  <!-- Tu hoja de estilos personalizada -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Estilos personalizados -->
+  <style>
+/* ===== Variables ===== */
+:root {
+  --deep: #08102a;
+  --midnight: #0d1733;
+  --panel: #121d42;
+  --gold: #d4af37;
+  --gold-light: #ecd27a;
+  --ivory: #f6f1e0;
+  --text: #e9ebf3;
+  --muted: #a3abc4;
+  --line: rgba(212, 175, 55, 0.22);
+}
+
+/* ===== Base ===== */
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--deep);
+  color: var(--text);
+  line-height: 1.7;
+}
+h1, h2, h3, h4, h5 { font-family: 'Cinzel', serif; }
+section[id] { scroll-margin-top: 64px; }
+a:focus-visible, button:focus-visible, .form-control:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 3px;
+}
+.gold-text { color: var(--gold); }
+.text-muted-light { color: var(--muted) !important; }
+
+/* ===== Navbar ===== */
+.luxury-navbar {
+  background: rgba(8, 16, 42, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.brand-gold {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--gold) !important;
+}
+.navbar-toggler { border-color: rgba(212, 175, 55, 0.5); }
+.luxury-navbar .nav-link {
+  position: relative;
+  color: var(--muted);
+  padding: 0.5rem 1rem;
+  transition: color 0.2s;
+}
+.luxury-navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 1rem; right: 1rem; bottom: 0.2rem;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+.luxury-navbar .nav-link:hover,
+.luxury-navbar .nav-link.active { color: var(--gold-light); }
+.luxury-navbar .nav-link:hover::after,
+.luxury-navbar .nav-link.active::after { transform: scaleX(1); }
+
+/* ===== Hero ===== */
+.hero-header {
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 0 5.5rem;
+  background: var(--midnight);
+}
+/* Grilla tipo "mapa de juego", se desvanece hacia los bordes */
+.hero-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 0, transparent 72%);
+  mask-image: radial-gradient(ellipse at 70% 40%, #000 0, transparent 72%);
+}
+.hero-header .container { position: relative; }
+.hero-title {
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--ivory);
+  margin-bottom: 0.75rem;
+}
+.role-subtitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.hero-lead {
+  max-width: 40ch;
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin: 0 auto 2rem;
+}
+@media (min-width: 992px) { .hero-lead { margin-left: 0; } }
+
+.profile-frame { position: relative; width: min(320px, 72vw); margin: 0 auto; }
+.profile-frame::before {
+  content: "";
+  position: absolute;
+  inset: 14px -14px -14px 14px;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+}
+.profile-img {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+/* Única animación automática: entrada del hero al cargar */
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.hero-copy > * { animation: rise 0.7s both; }
+.hero-copy > :nth-child(2) { animation-delay: 0.1s; }
+.hero-copy > :nth-child(3) { animation-delay: 0.2s; }
+.hero-copy > :nth-child(4) { animation-delay: 0.3s; }
+
+/* ===== Secciones ===== */
+.section-padding { padding: 6rem 0; }
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  letter-spacing: 0.04em;
+  margin-bottom: 0;
+}
+.gold-divider {
+  width: 64px;
+  height: 3px;
+  margin: 0.9rem 0 3rem;
+  border: 0;
+  background: var(--gold);
+  opacity: 1;
+}
+.portfolio-section, .contact-section { background: var(--deep); }
+.about-section {
+  background: var(--midnight);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ===== Portfolio ===== */
+.portfolio-card {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.portfolio-card:hover, .portfolio-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+.portfolio-thumb { position: relative; overflow: hidden; }
+.portfolio-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.portfolio-card:hover .portfolio-img { transform: scale(1.06); }
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(8, 16, 42, 0.75);
+  color: var(--gold-light);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.portfolio-card:hover .thumb-overlay,
+.portfolio-card:focus-visible .thumb-overlay { opacity: 1; }
+.portfolio-body { padding: 1.2rem 1.4rem 1.5rem; }
+.portfolio-body h5 { color: var(--gold); font-size: 1.1rem; margin-bottom: 0.35rem; }
+.portfolio-body p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+
+/* ===== Acerca de mí ===== */
+.about-text { max-width: 62ch; font-size: 1.1rem; color: var(--text); }
+.about-text strong { color: var(--gold-light); }
+.stack-title { font-size: 1.05rem; color: var(--gold); margin-bottom: 1rem; }
+.chip-list { display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 0; margin: 0; list-style: none; }
+.chip-list li {
+  padding: 0.35rem 1rem;
+  font-size: 0.9rem;
+  color: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+}
+
+/* ===== Contacto ===== */
+.contact-copy { max-width: 36ch; color: var(--muted); font-size: 1.05rem; }
+.luxury-form {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.luxury-form .form-label { color: var(--gold-light); font-weight: 600; font-size: 0.92rem; }
+.luxury-input {
+  background-color: var(--deep);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.7rem 1rem;
+}
+.luxury-input::placeholder { color: #8089a8; }
+.luxury-input:focus {
+  background-color: var(--deep);
+  color: var(--text);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.2);
+}
+.luxury-input option { background: var(--midnight); color: var(--text); }
+.form-select.luxury-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23d4af37' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+.luxury-form .form-check-input { background-color: var(--deep); border-color: var(--gold); }
+.luxury-form .form-check-input:checked { background-color: var(--gold); border-color: var(--gold); }
+.luxury-form .form-check-label { color: var(--muted); }
+
+/* ===== Botones ===== */
+.btn-gold, .btn-outline-gold {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border-radius: 999px;
+  transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-gold { background: var(--gold); color: var(--deep); border: 1px solid var(--gold); }
+.btn-gold:hover, .btn-gold:focus-visible, .btn-gold:active {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+  color: var(--deep);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(212, 175, 55, 0.3);
+}
+.btn-outline-gold { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+.btn-outline-gold:hover, .btn-outline-gold:focus-visible, .btn-outline-gold:active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--deep);
+}
+
+/* ===== Footer ===== */
+.luxury-footer { background: var(--midnight); border-top: 1px solid var(--line); }
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-left: 0.4rem;
+  font-size: 1.1rem;
+  color: var(--gold);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+.social-links a:hover, .social-links a:focus-visible {
+  background: var(--brand, var(--gold));
+  border-color: var(--brand, var(--gold));
+  color: #fff;
+  transform: translateY(-3px);
+}
+@media (max-width: 767.98px) { .social-links a { margin: 0 0.2rem; } }
+
+/* ===== Accesibilidad: respetar "reducir movimiento" ===== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+  </style>
 </head>
-<body>
+<body data-bs-spy="scroll" data-bs-target="#navbarPortfolio" data-bs-root-margin="-40% 0px -55% 0px" data-bs-smooth-scroll="true" tabindex="0">
 
   <!-- ==================== NAVBAR ==================== -->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top luxury-navbar">
     <div class="container">
       <a class="navbar-brand brand-gold" href="#">Andrés F. Petit</a>
-      
-      <!-- Botón Menú Hamburguesa para móviles -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPortfolio" aria-controls="navbarPortfolio" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPortfolio" aria-controls="navbarPortfolio" aria-expanded="false" aria-label="Abrir menú">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarPortfolio">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="#portfolio">Portfolio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#acerca-de-mi">Acerca de mí</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#contacto">Contacto</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#acerca-de-mi">Acerca de mí</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
   <!-- ==================== ENCABEZADO ==================== -->
-  <header class="hero-header text-center">
+  <header class="hero-header">
     <div class="container">
-      <!-- Reemplazá el src con la ruta o link de tu foto cuando la tengas -->
-      <img 
-        src="https://placehold.co/400x400/0d1733/d4af37?text=AFP" 
-        alt="Foto de Andrés F. Petit" 
-        class="profile-img mb-4"
-      >
-      <h1 class="display-4 fw-bold gold-text">Andrés F. Petit</h1>
-      <p class="role-subtitle mt-2">Game Dev &amp; Desarrollador Web</p>
+      <div class="row align-items-center gy-5">
+        <div class="col-12 col-lg-7 order-2 order-lg-1 hero-copy text-center text-lg-start">
+          <h1 class="hero-title">Andrés F. Petit</h1>
+          <p class="role-subtitle">Game Dev &amp; Desarrollador Web</p>
+          <p class="hero-lead">Creo videojuegos, mods de Minecraft y experiencias interactivas para la web.</p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+            <a href="#portfolio" class="btn btn-gold px-4">Ver proyectos</a>
+            <a href="#contacto" class="btn btn-outline-gold px-4">Escribime</a>
+          </div>
+        </div>
+        <div class="col-12 col-lg-5 order-1 order-lg-2">
+          <!-- Reemplazá el src con la ruta o link de tu foto cuando la tengas -->
+          <div class="profile-frame">
+            <img src="https://placehold.co/400x400/0d1733/d4af37?text=AFP" alt="Foto de Andrés F. Petit" class="profile-img">
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
   <!-- ==================== PORTFOLIO ==================== -->
   <section id="portfolio" class="section-padding portfolio-section">
     <div class="container">
-      <h2 class="section-title text-center gold-text">Portfolio</h2>
-      <hr class="gold-divider mx-auto mb-5">
+      <h2 class="section-title gold-text">Portfolio</h2>
+      <hr class="gold-divider">
 
-      <!-- 1 row y columnas de 3 por fila (col-md-4) -->
       <div class="row g-4">
-        
-        <!-- Proyecto 1 -->
-        <div class="col-12 col-md-4">
-          <div class="portfolio-card">
-            <a href="https://afpx64.github.io/SkyrimStoreMauri/" target="_blank" rel="noopener noreferrer">
-              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Skyrim+Store" alt="Skyrim Store" class="portfolio-img">
-            </a>
-            <div class="p-3">
-              <h5 class="gold-text mb-1">Skyrim Store</h5>
-              <p class="small text-muted-light mb-0">Tienda temática inspirada en The Elder Scrolls.</p>
+
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="portfolio-card" href="https://afpx64.github.io/SkyrimStoreMauri/" target="_blank" rel="noopener noreferrer">
+            <div class="portfolio-thumb">
+              <svg class="portfolio-img" viewBox="0 0 600 400" role="img" aria-label="Montañas nevadas con un escudo y espadas cruzadas"><rect width="600" height="400" fill="#0d1733"/><circle cx="470" cy="90" r="38" fill="#f6f1e0"/><path d="M0 300 190 120 290 230 390 150 600 320V400H0Z" fill="#1c2b5e"/><path d="M190 120 165 144 180 140 190 154 203 140 215 148Z" fill="#f6f1e0"/><path d="M0 340 120 250 230 330 360 240 600 350V400H0Z" fill="#121d42"/><path d="M250 120 350 310M350 120 250 310" stroke="#ecd27a" stroke-width="9" stroke-linecap="round"/><circle cx="300" cy="215" r="62" fill="#8a6d1c" stroke="#d4af37" stroke-width="6"/><circle cx="300" cy="215" r="14" fill="#d4af37"/></svg>
+              <span class="thumb-overlay"><i class="bi bi-box-arrow-up-right"></i> Ver proyecto</span>
             </div>
-          </div>
+            <div class="portfolio-body">
+              <h5>Skyrim Store</h5>
+              <p>Tienda temática inspirada en The Elder Scrolls.</p>
+            </div>
+          </a>
         </div>
 
-        <!-- Proyecto 2 -->
-        <div class="col-12 col-md-4">
-          <div class="portfolio-card">
-            <a href="https://afpx64.github.io/Arrays-Lista-del-Super-P-I-II-y-III/" target="_blank" rel="noopener noreferrer">
-              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Lista+del+Super" alt="Lista del Súper" class="portfolio-img">
-            </a>
-            <div class="p-3">
-              <h5 class="gold-text mb-1">Lista del Súper</h5>
-              <p class="small text-muted-light mb-0">Gestión dinámica de productos con Arrays en JS.</p>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="portfolio-card" href="https://afpx64.github.io/Arrays-Lista-del-Super-P-I-II-y-III/" target="_blank" rel="noopener noreferrer">
+            <div class="portfolio-thumb">
+              <svg class="portfolio-img" viewBox="0 0 600 400" role="img" aria-label="Lista de compras con tildes"><rect width="600" height="400" fill="#0d1733"/><rect x="190" y="50" width="220" height="300" rx="14" fill="#f6f1e0"/><rect x="250" y="38" width="100" height="28" rx="8" fill="#d4af37"/><g fill="none" stroke="#b8921f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M220 122l10 10 18-20M220 182l10 10 18-20"/></g><g fill="none" stroke="#0d1733" stroke-width="5"><rect x="219" y="230" width="28" height="28" rx="4"/><rect x="219" y="290" width="28" height="28" rx="4"/></g><path d="M270 120h110M270 180h90M270 244h120M270 304h80" stroke="#a3abc4" stroke-width="8" stroke-linecap="round"/></svg>
+              <span class="thumb-overlay"><i class="bi bi-box-arrow-up-right"></i> Ver proyecto</span>
             </div>
-          </div>
+            <div class="portfolio-body">
+              <h5>Lista del Súper</h5>
+              <p>Gestión dinámica de productos con Arrays en JS.</p>
+            </div>
+          </a>
         </div>
 
-        <!-- Proyecto 3 -->
-        <div class="col-12 col-md-4">
-          <div class="portfolio-card">
-            <a href="https://afpx64.github.io/Color-Game/" target="_blank" rel="noopener noreferrer">
-              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Color+Game" alt="Color Game" class="portfolio-img">
-            </a>
-            <div class="p-3">
-              <h5 class="gold-text mb-1">Color Game</h5>
-              <p class="small text-muted-light mb-0">Juego interactivo para adivinar códigos RGB.</p>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="portfolio-card" href="https://afpx64.github.io/Color-Game/" target="_blank" rel="noopener noreferrer">
+            <div class="portfolio-thumb">
+              <svg class="portfolio-img" viewBox="0 0 600 400" role="img" aria-label="Tres círculos rojo, verde y azul que se mezclan en blanco"><rect width="600" height="400" fill="#0d1733"/><circle cx="250" cy="160" r="90" fill="#ff3b3b" style="mix-blend-mode:screen"/><circle cx="350" cy="160" r="90" fill="#2bd96b" style="mix-blend-mode:screen"/><circle cx="300" cy="240" r="90" fill="#3b6bff" style="mix-blend-mode:screen"/><rect x="180" y="345" width="240" height="34" rx="17" fill="#121d42" stroke="#d4af37" stroke-width="2"/><text x="300" y="368" text-anchor="middle" font-family="monospace" font-size="18" fill="#ecd27a">rgb(255, 255, 255)</text></svg>
+              <span class="thumb-overlay"><i class="bi bi-box-arrow-up-right"></i> Ver proyecto</span>
             </div>
-          </div>
+            <div class="portfolio-body">
+              <h5>Color Game</h5>
+              <p>Juego interactivo para adivinar códigos RGB.</p>
+            </div>
+          </a>
         </div>
 
-        <!-- Proyecto 4 -->
-        <div class="col-12 col-md-4">
-          <div class="portfolio-card">
-            <a href="https://afpx64.github.io/me-puedo-jubilar-xd/" target="_blank" rel="noopener noreferrer">
-              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Me+Puedo+Jubilar" alt="¿Me puedo jubilar?" class="portfolio-img">
-            </a>
-            <div class="p-3">
-              <h5 class="gold-text mb-1">¿Me puedo jubilar?</h5>
-              <p class="small text-muted-light mb-0">Calculadora interactiva de edad jubilatoria.</p>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="portfolio-card" href="https://afpx64.github.io/me-puedo-jubilar-xd/" target="_blank" rel="noopener noreferrer">
+            <div class="portfolio-thumb">
+              <svg class="portfolio-img" viewBox="0 0 600 400" role="img" aria-label="Reloj de arena dorado"><rect width="600" height="400" fill="#0d1733"/><rect x="210" y="60" width="180" height="16" rx="8" fill="#d4af37"/><rect x="210" y="324" width="180" height="16" rx="8" fill="#d4af37"/><path d="M225 76h150c0 70-55 95-55 124s55 54 55 124H225c0-70 55-95 55-124S225 146 225 76Z" fill="none" stroke="#ecd27a" stroke-width="8" stroke-linejoin="round"/><path d="M250 100h100c-5 30-30 50-35 70h-30c-5-20-30-40-35-70Z" fill="#d4af37" opacity=".85"/><path d="M300 190v70" stroke="#d4af37" stroke-width="4"/><path d="M255 324c10-40 30-55 45-55s35 15 45 55Z" fill="#d4af37"/></svg>
+              <span class="thumb-overlay"><i class="bi bi-box-arrow-up-right"></i> Ver proyecto</span>
             </div>
-          </div>
+            <div class="portfolio-body">
+              <h5>¿Me puedo jubilar?</h5>
+              <p>Calculadora interactiva de edad jubilatoria.</p>
+            </div>
+          </a>
         </div>
 
-        <!-- Proyecto 5 -->
-        <div class="col-12 col-md-4">
-          <div class="portfolio-card">
-            <a href="https://afpx64.github.io/Calculadora-de-abastecimiento-de-vida/" target="_blank" rel="noopener noreferrer">
-              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Abastecimiento+de+Vida" alt="Calculadora de Abastecimiento de Vida" class="portfolio-img">
-            </a>
-            <div class="p-3">
-              <h5 class="gold-text mb-1">Abastecimiento de Vida</h5>
-              <p class="small text-muted-light mb-0">Cálculo de provisiones a lo largo del tiempo.</p>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="portfolio-card" href="https://afpx64.github.io/Calculadora-de-abastecimiento-de-vida/" target="_blank" rel="noopener noreferrer">
+            <div class="portfolio-thumb">
+              <svg class="portfolio-img" viewBox="0 0 600 400" role="img" aria-label="Barras que bajan con el tiempo y un corazón"><rect width="600" height="400" fill="#0d1733"/><g fill="#d4af37"><rect x="100" y="100" width="56" height="240" rx="6"/><rect x="180" y="140" width="56" height="200" rx="6" fill-opacity=".9"/><rect x="260" y="180" width="56" height="160" rx="6" fill-opacity=".8"/><rect x="340" y="225" width="56" height="115" rx="6" fill-opacity=".7"/><rect x="420" y="270" width="56" height="70" rx="6" fill-opacity=".6"/></g><path d="M70 340H530" stroke="#a3abc4" stroke-width="4"/><path d="M128 85 448 250" stroke="#f6f1e0" stroke-width="4" stroke-dasharray="10 10"/><path d="M70 76c-12-20-40-4-26 18l26 24 26-24c14-22-14-38-26-18Z" fill="#e5484d"/></svg>
+              <span class="thumb-overlay"><i class="bi bi-box-arrow-up-right"></i> Ver proyecto</span>
             </div>
-          </div>
+            <div class="portfolio-body">
+              <h5>Abastecimiento de Vida</h5>
+              <p>Cálculo de provisiones a lo largo del tiempo.</p>
+            </div>
+          </a>
         </div>
 
-        <!-- Proyecto 6 -->
-        <div class="col-12 col-md-4">
-          <div class="portfolio-card">
-            <a href="https://afpx64.github.io/Rock-Paper-Scissors/" target="_blank" rel="noopener noreferrer">
-              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Rock+Paper+Scissors" alt="Rock Paper Scissors" class="portfolio-img">
-            </a>
-            <div class="p-3">
-              <h5 class="gold-text mb-1">Rock, Paper, Scissors</h5>
-              <p class="small text-muted-light mb-0">El clásico Piedra, Papel o Tijera en el navegador.</p>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="portfolio-card" href="https://afpx64.github.io/Rock-Paper-Scissors/" target="_blank" rel="noopener noreferrer">
+            <div class="portfolio-thumb">
+              <svg class="portfolio-img" viewBox="0 0 600 400" role="img" aria-label="Piedra, papel y tijera"><rect width="600" height="400" fill="#0d1733"/><g fill="#121d42" stroke="#d4af37" stroke-width="5"><circle cx="130" cy="200" r="78"/><circle cx="300" cy="200" r="78"/><circle cx="470" cy="200" r="78"/></g><path d="M100 215l15-35 30-12 25 25-5 35-38 10Z" fill="#a3abc4"/><rect x="272" y="160" width="56" height="80" rx="6" fill="#f6f1e0"/><path d="M284 185h32M284 205h32M284 225h20" stroke="#a3abc4" stroke-width="5" stroke-linecap="round"/><g fill="none" stroke-width="6"><circle cx="448" cy="232" r="13" stroke="#d4af37"/><circle cx="492" cy="232" r="13" stroke="#d4af37"/><path d="M455 220 490 165M485 220 450 165" stroke="#f6f1e0" stroke-width="7" stroke-linecap="round"/></g></svg>
+              <span class="thumb-overlay"><i class="bi bi-box-arrow-up-right"></i> Ver proyecto</span>
             </div>
-          </div>
+            <div class="portfolio-body">
+              <h5>Rock, Paper, Scissors</h5>
+              <p>El clásico Piedra, Papel o Tijera en el navegador.</p>
+            </div>
+          </a>
         </div>
 
-        <!-- Proyecto 7 (Descomentá este bloque cuando agregues el link de tu 7mo trabajo)
-        <div class="col-12 col-md-4">
-          <div class="portfolio-card">
-            <a href="TU_LINK_DEL_PROYECTO_7" target="_blank" rel="noopener noreferrer">
-              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Proyecto+7" alt="Proyecto 7" class="portfolio-img">
-            </a>
-            <div class="p-3">
-              <h5 class="gold-text mb-1">Proyecto 7</h5>
-              <p class="small text-muted-light mb-0">Descripción breve del séptimo proyecto.</p>
+        <!-- Proyecto 7 (descomentá este bloque cuando agregues el link)
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a class="portfolio-card" href="TU_LINK_DEL_PROYECTO_7" target="_blank" rel="noopener noreferrer">
+            <div class="portfolio-thumb">
+              <img src="https://placehold.co/600x400/0d1733/d4af37?text=Proyecto+7" alt="Proyecto 7" class="portfolio-img" loading="lazy">
+              <span class="thumb-overlay"><i class="bi bi-box-arrow-up-right"></i> Ver proyecto</span>
             </div>
-          </div>
+            <div class="portfolio-body">
+              <h5>Proyecto 7</h5>
+              <p>Descripción breve del séptimo proyecto.</p>
+            </div>
+          </a>
         </div>
         -->
 
@@ -163,40 +456,66 @@
 
   <!-- ==================== ACERCA DE MÍ ==================== -->
   <section id="acerca-de-mi" class="section-padding about-section">
-    <div class="container text-center">
+    <div class="container">
       <h2 class="section-title gold-text">Acerca de mí</h2>
-      <hr class="gold-divider mx-auto mb-4">
-      <p class="lead mx-auto about-text">
-        Soy <strong>Andrés F. Petit</strong>, desarrollador enfocado en la creación de videojuegos y experiencias interactivas en la web. Me apasiona combinar lógica de programación, diseño visual y mecánicas entretenidas para dar vida a cada proyecto. Fuera de la pantalla, paso mi tiempo andando en skate y tocando en mi banda musical, dos mundos que alimentan mi creatividad y mi forma de trabajar en equipo.
-      </p>
+      <hr class="gold-divider">
+      <div class="row gy-5">
+        <div class="col-12 col-lg-7">
+          <p class="about-text">
+            Soy <strong>Andrés F. Petit</strong>, desarrollador enfocado en la creación de videojuegos y experiencias interactivas en la web. Me apasiona combinar lógica de programación, diseño visual y mecánicas entretenidas para dar vida a cada proyecto. Fuera de la pantalla, paso mi tiempo andando en skate y tocando en mi banda musical, dos mundos que alimentan mi creatividad y mi forma de trabajar en equipo.
+          </p>
+        </div>
+        <div class="col-12 col-lg-5">
+          <h3 class="stack-title">Desarrollo web</h3>
+          <ul class="chip-list">
+            <li>HTML5</li>
+            <li>CSS3</li>
+            <li>JavaScript</li>
+            <li>Bootstrap 5</li>
+            <li>GitHub</li>
+          </ul>
+          <h3 class="stack-title mt-4">Minecraft modding</h3>
+          <ul class="chip-list">
+            <li>Java 21</li>
+            <li>NeoForge</li>
+            <li>ModDevGradle</li>
+            <li>Gradle</li>
+            <li>CurseForge</li>
+            <li>Modrinth</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ==================== CONTACTO ==================== -->
   <section id="contacto" class="section-padding contact-section">
     <div class="container">
-      <h2 class="section-title text-center gold-text">Contacto</h2>
-      <hr class="gold-divider mx-auto mb-5">
+      <div class="row gy-5">
+        <div class="col-12 col-lg-5">
+          <h2 class="section-title gold-text">Contacto</h2>
+          <hr class="gold-divider">
+          <p class="contact-copy">¿Tenés un proyecto, una idea o querés tocar juntos? Contame qué tenés en mente y te respondo por email.</p>
+        </div>
 
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
+        <div class="col-12 col-lg-7">
           <form action="https://submit-form.com/yvENrarHl" method="POST" class="luxury-form p-4 p-md-5">
-            
+
             <div class="mb-3">
-              <label for="contacto-nombre" class="form-label">Nombre:</label>
+              <label for="contacto-nombre" class="form-label">Nombre</label>
               <input type="text" class="form-control luxury-input" id="contacto-nombre" name="nombre" placeholder="Tu nombre" required>
             </div>
 
             <div class="mb-3">
-              <label for="contacto-email" class="form-label">Email:</label>
+              <label for="contacto-email" class="form-label">Email</label>
               <input type="email" class="form-control luxury-input" id="contacto-email" name="email" placeholder="nombre@ejemplo.com" required>
             </div>
 
             <div class="mb-3">
-              <label for="contacto-motivo" class="form-label">Motivo de contacto:</label>
+              <label for="contacto-motivo" class="form-label">Motivo de contacto</label>
               <select class="form-select luxury-input" id="contacto-motivo" name="motivo" required>
                 <option value="" disabled selected>Seleccioná un motivo...</option>
-                <option value="proyecto-gamedev">Proyecto de Videojuegos / Web</option>
+                <option value="proyecto-gamedev">Proyecto de Videojuegos / Mods / Web</option>
                 <option value="colaboracion">Colaboración / Banda</option>
                 <option value="consulta">Consulta general</option>
                 <option value="otro">Otro motivo</option>
@@ -204,18 +523,16 @@
             </div>
 
             <div class="mb-3">
-              <label for="contacto-mensaje" class="form-label">Mensaje detallado:</label>
+              <label for="contacto-mensaje" class="form-label">Mensaje</label>
               <textarea class="form-control luxury-input" id="contacto-mensaje" name="mensaje" rows="4" placeholder="Escribí tu mensaje acá..." required></textarea>
             </div>
 
             <div class="form-check mb-4">
               <input class="form-check-input" type="checkbox" id="contacto-terminos" name="terminos_aceptados" required>
-              <label class="form-check-label small" for="contacto-terminos">
-                Acepto los términos y condiciones
-              </label>
+              <label class="form-check-label small" for="contacto-terminos">Acepto los términos y condiciones</label>
             </div>
 
-            <button type="submit" class="btn btn-gold w-100 py-2">Enviar Mensaje</button>
+            <button type="submit" class="btn btn-gold w-100 py-2">Enviar mensaje</button>
           </form>
         </div>
       </div>
@@ -225,29 +542,24 @@
   <!-- ==================== FOOTER Y COPYRIGHT ==================== -->
   <footer class="luxury-footer py-5">
     <div class="container">
-      <!-- 1 row y 2 col como pide la consigna -->
       <div class="row align-items-center text-center text-md-start">
-        
-        <!-- Columna 1: Datos personales y Copyright -->
+
         <div class="col-12 col-md-6 mb-4 mb-md-0">
           <h5 class="gold-text mb-2">Andrés F. Petit</h5>
           <p class="mb-1 small text-muted-light">Game Dev | Buenos Aires, Argentina</p>
-          <p class="mb-0 small text-muted-light">
-            &copy; Copyright 2026 - Todos los derechos reservados.
-          </p>
+          <p class="mb-0 small text-muted-light">&copy; Copyright 2026 - Todos los derechos reservados.</p>
         </div>
 
-        <!-- Columna 2: Redes Sociales -->
         <div class="col-12 col-md-6 text-md-end">
-          <p class="small gold-text mb-2 text-uppercase tracking-wide">Conectemos</p>
+          <p class="small gold-text mb-2">Conectemos</p>
           <div class="social-links">
-            <a href="https://github.com/afpx64" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="bi bi-github"></i></a>
-            <a href="https://www.facebook.com/plataforma5la" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/plataforma5la" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.youtube.com/@Plataforma5" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-            <a href="https://twitter.com/plataforma5la" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
-            <a href="https://www.twitch.tv" target="_blank" rel="noopener noreferrer" aria-label="Twitch"><i class="bi bi-twitch"></i></a>
-            <a href="https://www.linkedin.com/school/plataforma5" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="https://github.com/afpx64" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub" style="--brand:#6e5494"><i class="bi bi-github"></i></a>
+            <a href="https://www.facebook.com/plataforma5la" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook" style="--brand:#1877f2"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/plataforma5la" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" style="--brand:#e1306c"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.youtube.com/@Plataforma5" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube" style="--brand:#ff0033"><i class="bi bi-youtube"></i></a>
+            <a href="https://twitter.com/plataforma5la" target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter" style="--brand:#657786"><i class="bi bi-twitter-x"></i></a>
+            <a href="https://www.twitch.tv" target="_blank" rel="noopener noreferrer" aria-label="Twitch" title="Twitch" style="--brand:#9146ff"><i class="bi bi-twitch"></i></a>
+            <a href="https://www.linkedin.com/school/plataforma5" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" style="--brand:#0a66c2"><i class="bi bi-linkedin"></i></a>
           </div>
         </div>
 
@@ -255,7 +567,7 @@
     </div>
   </footer>
 
-  <!-- Bootstrap 5 JS Bundle (indispensable para que funcione el Menú Hamburguesa) -->
+  <!-- Bootstrap 5 JS Bundle (menú hamburguesa y scrollspy) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
